@@ -1,102 +1,149 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="hi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zyphentra AI — Video Studio</title>
-  <style>
-    *{box-sizing:border-box}
-    body{margin:0;background:#080b14;color:#f5f7ff;font-family:Arial,sans-serif}
-    header{padding:20px 7%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #20263a}
-    .logo{font-size:25px;font-weight:800;color:#8c7bff}
-    .tag{font-size:12px;color:#b8c0d9;border:1px solid #343b55;padding:8px 12px;border-radius:20px}
-    main{max-width:900px;margin:55px auto;padding:20px}
-    .hero{text-align:center;margin-bottom:35px}
-    h1{font-size:clamp(34px,7vw,58px);margin:10px 0}
-    h1 span{color:#9c8cff}
-    .sub{color:#aab2ca;line-height:1.7}
-    .panel{background:#111626;border:1px solid #2a3149;border-radius:22px;padding:24px}
-    label{display:block;font-size:14px;margin:18px 0 10px;color:#d9def0}
-    textarea,select{width:100%;background:#090e1b;color:white;border:1px solid #343c57;border-radius:12px;padding:15px;font-size:15px}
-    textarea{min-height:135px;resize:vertical}
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-    button{width:100%;margin-top:22px;border:0;border-radius:12px;padding:16px;background:linear-gradient(100deg,#705cff,#b04dff);color:white;font-size:16px;font-weight:bold;cursor:pointer}
-    button:hover{opacity:.9}
-    #status{margin-top:18px;padding:14px;background:#090e1b;border-radius:10px;color:#c4cbe0;line-height:1.6}
-    .preview{margin-top:20px}
-    video{width:100%;border-radius:12px;background:#05070d}
-    footer{text-align:center;padding:35px 15px;color:#747e9b;font-size:13px}
-    @media(max-width:550px){.grid{grid-template-columns:1fr}main{margin:25px auto;padding:14px}.panel{padding:17px}header{padding:17px}}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zyphentra AI — Video Generator</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#080b14;color:#f4f5ff;font-family:Arial,sans-serif}
+header{padding:20px 6%;border-bottom:1px solid #252a40;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:24px;font-weight:800;color:#a294ff}
+main{max-width:850px;margin:45px auto;padding:20px}
+.hero{text-align:center;margin-bottom:30px}
+h1{font-size:clamp(32px,6vw,52px);margin:15px 0}
+h1 span{color:#a294ff}
+p{color:#aab2ca;line-height:1.6}
+.panel{background:#111626;border:1px solid #292f48;padding:24px;border-radius:20px}
+label{display:block;margin:17px 0 9px;font-size:14px}
+textarea,select{width:100%;background:#090e1b;color:white;border:1px solid #363d58;padding:14px;border-radius:10px;font-size:15px}
+textarea{height:150px;resize:vertical}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+button{width:100%;padding:16px;border:0;border-radius:11px;background:linear-gradient(100deg,#705cff,#b14dff);color:white;font-size:16px;font-weight:bold;margin-top:22px;cursor:pointer}
+button:disabled{opacity:.6}
+#status{margin-top:18px;background:#090e1b;border-radius:10px;padding:15px;line-height:1.6}
+video{width:100%;margin-top:20px;border-radius:12px}
+.small{font-size:12px;color:#8f98b4}
+footer{text-align:center;color:#7d86a1;padding:25px}
+@media(max-width:550px){.grid{grid-template-columns:1fr}main{padding:12px;margin:25px auto}.panel{padding:17px}}
+</style>
 </head>
 <body>
-  <header>
-    <div class="logo">✦ ZYPHENTRA AI</div>
-    <div class="tag">AI VIDEO STUDIO</div>
-  </header>
+<header>
+  <div class="logo">✦ ZYPHENTRA AI</div>
+  <span class="small">AI VIDEO STUDIO</span>
+</header>
 
-  <main>
-    <section class="hero">
-      <div class="tag">YOUR IDEAS, YOUR UNIVERSE</div>
-      <h1>Create videos with <span>AI.</span></h1>
-      <p class="sub">Describe your imagination. Prepare your video generation request in seconds.</p>
-    </section>
+<main>
+  <section class="hero">
+    <p>YOUR STORY. YOUR IMAGINATION.</p>
+    <h1>Make videos with <span>AI</span></h1>
+    <p>अपनी कहानी लिखो और वीडियो बनाने की प्रक्रिया शुरू करो।</p>
+  </section>
+
+  <section class="panel">
+    <label for="prompt">अपनी कहानी या वीडियो का विवरण लिखें</label>
+    <textarea id="prompt" placeholder="उदाहरण: एक गाँव में आधी रात को एक रहस्यमयी परछाईं दिखाई देती है..."></textarea>
 
 ```
-<section class="panel">
-  <label for="prompt">Describe your video</label>
-  <textarea id="prompt" placeholder="Example: A cinematic shot of a futuristic Indian city at night, flying cars, glowing lights, ultra realistic, 4K..."></textarea>
-
-  <div class="grid">
-    <div>
-      <label for="duration">Video duration</label>
-      <select id="duration">
-        <option value="5">5 seconds</option>
-        <option value="10">10 seconds</option>
-      </select>
-    </div>
-    <div>
-      <label for="style">Video style</label>
-      <select id="style">
-        <option>Cinematic</option>
-        <option>Realistic</option>
-        <option>Anime</option>
-        <option>Fantasy</option>
-        <option>Horror</option>
-        <option>Documentary</option>
-      </select>
-    </div>
+<div class="grid">
+  <div>
+    <label for="duration">पूरे वीडियो की अवधि</label>
+    <select id="duration">
+      <option value="30">30 सेकंड</option>
+      <option value="60">1 मिनट</option>
+      <option value="180">3 मिनट</option>
+      <option value="300">5 मिनट</option>
+      <option value="600">10 मिनट</option>
+    </select>
   </div>
+  <div>
+    <label for="style">वीडियो स्टाइल</label>
+    <select id="style">
+      <option value="Cinematic">Cinematic</option>
+      <option value="Realistic">Realistic</option>
+      <option value="Horror">Horror</option>
+      <option value="Anime">Anime</option>
+      <option value="Fantasy">Fantasy</option>
+      <option value="Documentary">Documentary</option>
+    </select>
+  </div>
+</div>
 
-  <button id="generate">Generate Video</button>
-  <div id="status" role="status">Ready. Enter a prompt to prepare your video request.</div>
-  <div id="preview" class="preview"></div>
-</section>
+<button id="generate">Generate Full Video</button>
+<div id="status" role="status">अपनी कहानी लिखें और Generate Full Video दबाएँ।</div>
+<div id="result"></div>
+<p class="small">लंबी वीडियो जनरेशन के लिए AI मॉडल, सुरक्षित सर्वर और क्लिप जोड़ने की सुविधा आवश्यक है।</p>
 ```
 
-  </main>
+  </section>
+</main>
 
-  <footer>© 2026 Zyphentra AI · Creative tools for everyone</footer>
+<footer>© 2026 Zyphentra AI</footer>
 
-  <script>
-    const promptBox = document.getElementById('prompt');
-    const statusBox = document.getElementById('status');
-    const button = document.getElementById('generate');
-    const preview = document.getElementById('preview');
+<script>
+const button = document.getElementById('generate');
+const statusBox = document.getElementById('status');
+const promptBox = document.getElementById('prompt');
+const durationBox = document.getElementById('duration');
+const styleBox = document.getElementById('style');
+const result = document.getElementById('result');
 
-    button.addEventListener('click', async () => {
-      const prompt = promptBox.value.trim();
-      if (!prompt) {
-        statusBox.textContent = 'Please enter a description for your video first.';
-        promptBox.focus();
-        return;
-      }
+button.addEventListener('click', async () => {
+  const prompt = promptBox.value.trim();
+  if (!prompt) {
+    statusBox.textContent = 'पहले अपनी कहानी या वीडियो का विवरण लिखें।';
+    promptBox.focus();
+    return;
+  }
 
-      statusBox.textContent = 'Your prompt is ready, but video generation is not connected yet. A secure server connection to the AI video provider must be configured first.';
-      preview.innerHTML = '';
+  button.disabled = true;
+  button.textContent = 'Processing...';
+  statusBox.textContent = 'सुरक्षित AI वीडियो सर्वर से संपर्क किया जा रहा है...';
+  result.replaceChildren();
+
+  try {
+    const response = await fetch('/api/generate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        prompt,
+        duration: Number(durationBox.value),
+        style: styleBox.value
+      })
     });
-  </script>
+
+    if (!response.ok) {
+      throw new Error('वीडियो सर्वर अभी कनेक्ट नहीं है। Backend setup करना बाकी है।');
+    }
+
+    const data = await response.json();
+
+    if (data.video_url) {
+      const video = document.createElement('video');
+      video.controls = true;
+      video.src = data.video_url;
+      result.appendChild(video);
+
+      const link = document.createElement('a');
+      link.href = data.video_url;
+      link.download = 'zyphentra-video.mp4';
+      link.textContent = 'Download Video';
+      link.style.cssText = 'display:block;color:#b6aaff;margin-top:15px';
+      result.appendChild(link);
+      statusBox.textContent = 'वीडियो तैयार है!';
+    } else {
+      statusBox.textContent = data.status || 'वीडियो का अनुरोध भेजा गया है।';
+    }
+  } catch (error) {
+    statusBox.textContent = error.message;
+  } finally {
+    button.disabled = false;
+    button.textContent = 'Generate Full Video';
+  }
+});
+</script>
 
 </body>
 </html>
