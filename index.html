@@ -1,169 +1,102 @@
 <!DOCTYPE html>
-<html lang="hi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zyphentra AI — Direct AI Video Generator</title>
-    <style>
-        :root {
-            --bg-dark: #0a0a14;
-            --panel-dark: #121225;
-            --input-bg: #1a1a36;
-            --accent-neon: #00ffcc;
-            --accent-blue: #3b82f6;
-            --text-main: #ffffff;
-            --text-muted: #8a8fa8;
-            --border-color: #252545;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background: var(--bg-dark); color: var(--text-main); padding: 15px; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
-        .app-container { width: 100%; max-width: 480px; }
-        header { text-align: center; margin-bottom: 25px; }
-        .logo { font-size: 2.2rem; font-weight: 800; letter-spacing: 2px; color: #fff; text-transform: uppercase; }
-        .logo span { color: var(--accent-neon); text-shadow: 0 0 15px rgba(0,255,204,0.4); }
-        .tagline { color: var(--text-muted); font-size: 0.9rem; margin-top: 6px; font-weight: 500; }
-        
-        .studio-card { background: var(--panel-dark); border: 1px solid var(--border-color); border-radius: 20px; padding: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.6); display: flex; flex-direction: column; gap: 18px; }
-        .card-title { font-size: 1.4rem; font-weight: 700; background: linear-gradient(90deg, #fff, var(--text-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .input-group { display: flex; flex-direction: column; gap: 8px; }
-        label { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
-        textarea, select { width: 100%; background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 12px; color: #fff; padding: 14px; font-size: 0.95rem; outline: none; resize: none; transition: all 0.3s ease; }
-        textarea:focus, select:focus { border-color: var(--accent-neon); box-shadow: 0 0 10px rgba(0, 255, 204, 0.2); }
-        
-        .row-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        
-        #generate-btn { background: linear-gradient(135deg, var(--accent-blue), #1d4ed8); color: white; border: none; border-radius: 12px; padding: 16px; font-size: 1.05rem; font-weight: bold; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 5px; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); }
-        #generate-btn:hover:not(:disabled) { background: linear-gradient(135deg, #2563eb, #1e40af); transform: translateY(-1px); }
-        #generate-btn:disabled { background: #222538; color: #555; cursor: not-allowed; box-shadow: none; }
 
-        /* प्लेयर और लोडिंग ओवरले */
-        .output-container { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 14px; position: relative; overflow: hidden; border: 1px solid var(--border-color); margin-top: 10px; }
-        video { width: 100%; height: 100%; object-fit: contain; }
-        .placeholder { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.9rem; text-align: center; padding: 20px; font-style: italic; }
-        
-        .status-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 10, 20, 0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; z-index: 10; }
-        .spinner { width: 36px; height: 36px; border: 3px solid rgba(255,255,255,0.05); border-top-color: var(--accent-neon); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 14px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .progress-box { width: 80%; height: 5px; background: #161726; border-radius: 3px; margin-top: 15px; overflow: hidden; }
-        .progress-bar { height: 100%; background: var(--accent-neon); width: 0%; transition: width 0.4s ease; box-shadow: 0 0 10px var(--accent-neon); }
-        
-        #error-text { color: #ff4a4a; font-size: 0.85rem; margin-top: 5px; text-align: center; font-weight: 500; }
-        .download-zone { display: flex; justify-content: center; margin-top: 5px; }
-        .download-btn { width: 100%; text-align: center; background: #1a1a36; color: #fff; padding: 14px; border-radius: 12px; text-decoration: none; font-weight: 600; border: 1px solid var(--border-color); font-size: 1rem; transition: all 0.3s ease; }
-        .download-btn:hover:not(.disabled) { background: var(--accent-neon); color: var(--bg-dark); border-color: var(--accent-neon); box-shadow: 0 0 15px rgba(0,255,204,0.3); }
-        .disabled { opacity: 0.2; pointer-events: none; }
-        .hidden { display: none !important; }
-    </style>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zyphentra AI — Video Studio</title>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;background:#080b14;color:#f5f7ff;font-family:Arial,sans-serif}
+    header{padding:20px 7%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #20263a}
+    .logo{font-size:25px;font-weight:800;color:#8c7bff}
+    .tag{font-size:12px;color:#b8c0d9;border:1px solid #343b55;padding:8px 12px;border-radius:20px}
+    main{max-width:900px;margin:55px auto;padding:20px}
+    .hero{text-align:center;margin-bottom:35px}
+    h1{font-size:clamp(34px,7vw,58px);margin:10px 0}
+    h1 span{color:#9c8cff}
+    .sub{color:#aab2ca;line-height:1.7}
+    .panel{background:#111626;border:1px solid #2a3149;border-radius:22px;padding:24px}
+    label{display:block;font-size:14px;margin:18px 0 10px;color:#d9def0}
+    textarea,select{width:100%;background:#090e1b;color:white;border:1px solid #343c57;border-radius:12px;padding:15px;font-size:15px}
+    textarea{min-height:135px;resize:vertical}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    button{width:100%;margin-top:22px;border:0;border-radius:12px;padding:16px;background:linear-gradient(100deg,#705cff,#b04dff);color:white;font-size:16px;font-weight:bold;cursor:pointer}
+    button:hover{opacity:.9}
+    #status{margin-top:18px;padding:14px;background:#090e1b;border-radius:10px;color:#c4cbe0;line-height:1.6}
+    .preview{margin-top:20px}
+    video{width:100%;border-radius:12px;background:#05070d}
+    footer{text-align:center;padding:35px 15px;color:#747e9b;font-size:13px}
+    @media(max-width:550px){.grid{grid-template-columns:1fr}main{margin:25px auto;padding:14px}.panel{padding:17px}header{padding:17px}}
+  </style>
 </head>
 <body>
-    <div class="app-container">
-        <header>
-            <div class="logo">Zyphentra <span>AI</span></div>
-            <p class="tagline">Direct AI Video Generation Studio</p>
-        </header>
+  <header>
+    <div class="logo">✦ ZYPHENTRA AI</div>
+    <div class="tag">AI VIDEO STUDIO</div>
+  </header>
 
-        <main class="studio-card">
-            <div class="card-title">AI Video Prompt Studio</div>
-            
-            <div class="input-group">
-                <label>Your Idea / कहानी का आइडिया</label>
-                <textarea id="prompt" placeholder="Ek ganv me khandahar maidan, horror style, cinematic look..." rows="4"></textarea>
-            </div>
+  <main>
+    <section class="hero">
+      <div class="tag">YOUR IDEAS, YOUR UNIVERSE</div>
+      <h1>Create videos with <span>AI.</span></h1>
+      <p class="sub">Describe your imagination. Prepare your video generation request in seconds.</p>
+    </section>
 
-            <div class="row-grid">
-                <div class="input-group">
-                    <label>Visual Style</label>
-                    <select id="style">
-                        <option value="Horror">Horror</option>
-                        <option value="Cinematic Realistic">Cinematic Realistic</option>
-                        <option value="Anime">Anime</option>
-                        <option value="3D Animation">3D Animation</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>Aspect Ratio</label>
-                    <select id="aspect-ratio">
-                        <option value="16:9">16:9 (YouTube)</option>
-                        <option value="9:16">9:16 (Reels/Shorts)</option>
-                        <option value="1:1">1:1 (Square)</option>
-                    </select>
-                </div>
-            </div>
+```
+<section class="panel">
+  <label for="prompt">Describe your video</label>
+  <textarea id="prompt" placeholder="Example: A cinematic shot of a futuristic Indian city at night, flying cars, glowing lights, ultra realistic, 4K..."></textarea>
 
-            <button id="generate-btn" onclick="generateRealVideo()">✦ Generate Video</button>
-            <div id="error-text" class="hidden"></div>
-
-            <!-- वीडियो आउटपुट एरिया -->
-            <div class="output-container">
-                <div id="status-overlay" class="status-overlay hidden">
-                    <div class="spinner"></div>
-                    <p id="status-text">AI सर्वर कनेक्ट हो रहा है...</p>
-                    <div class="progress-box">
-                        <div id="progress-bar" class="progress-bar"></div>
-                    </div>
-                </div>
-
-                <video id="video-player" controls class="hidden"></video>
-                
-                <div id="placeholder-text" class="placeholder">
-                    <span>आपका AI वीडियो यहाँ दिखाई देगा</span>
-                </div>
-            </div>
-
-            <div class="download-zone">
-                <a id="download-btn" class="download-btn disabled" download="zyphentra_video.mp4">Download Video</a>
-            </div>
-        </main>
+  <div class="grid">
+    <div>
+      <label for="duration">Video duration</label>
+      <select id="duration">
+        <option value="5">5 seconds</option>
+        <option value="10">10 seconds</option>
+      </select>
     </div>
+    <div>
+      <label for="style">Video style</label>
+      <select id="style">
+        <option>Cinematic</option>
+        <option>Realistic</option>
+        <option>Anime</option>
+        <option>Fantasy</option>
+        <option>Horror</option>
+        <option>Documentary</option>
+      </select>
+    </div>
+  </div>
 
-    <script>
-        // ⚠️ अपनी सीक्रेट Fal.ai की यहाँ पेस्ट करें ताकि यह सीधे गिटहब पेजेस पर काम करे
-        const FAL_KEY = "यहाँ_अपनी_FAL_KEY_पेस्ट_करें"; 
+  <button id="generate">Generate Video</button>
+  <div id="status" role="status">Ready. Enter a prompt to prepare your video request.</div>
+  <div id="preview" class="preview"></div>
+</section>
+```
 
-        async function generateRealVideo() {
-            const promptVal = document.getElementById('prompt').value.trim();
-            const errorDiv = document.getElementById('error-text');
-            errorDiv.classList.add('hidden');
+  </main>
 
-            if (FAL_KEY === "यहाँ_अपनी_FAL_KEY_पेस्ट_करें" || !FAL_KEY) {
-                alert('कृपया कोड की लाइन नंबर 132 में अपनी Fal.ai की API Key दर्ज करें!');
-                return;
-            }
-            if (!promptVal) {
-                alert('कृपया पहले कोई कहानी या प्रॉम्प्ट लिखें!');
-                return;
-            }
+  <footer>© 2026 Zyphentra AI · Creative tools for everyone</footer>
 
-            const btn = document.getElementById('generate-btn');
-            const overlay = document.getElementById('status-overlay');
-            const statusText = document.getElementById('status-text');
-            const pBar = document.getElementById('progress-bar');
-            const player = document.getElementById('video-player');
-            const placeholder = document.getElementById('placeholder-text');
-            const dlBtn = document.getElementById('download-btn');
+  <script>
+    const promptBox = document.getElementById('prompt');
+    const statusBox = document.getElementById('status');
+    const button = document.getElementById('generate');
+    const preview = document.getElementById('preview');
 
-            btn.disabled = true;
-            overlay.classList.remove('hidden');
-            player.classList.add('hidden');
-            placeholder.classList.add('hidden');
-            dlBtn.classList.add('disabled');
-            
-            statusText.innerText = "AI कतार (Queue) में जुड़ रहे हैं...";
-            pBar.style.width = "15%";
+    button.addEventListener('click', async () => {
+      const prompt = promptBox.value.trim();
+      if (!prompt) {
+        statusBox.textContent = 'Please enter a description for your video first.';
+        promptBox.focus();
+        return;
+      }
 
-            try {
-                const styleVal = document.getElementById('style').value;
-                const aspectVal = document.getElementById('aspect-ratio').value;
-                const finalPrompt = `${promptVal}, ${styleVal} style, high quality, 4k, cinematic detailed`;
+      statusBox.textContent = 'Your prompt is ready, but video generation is not connected yet. A secure server connection to the AI video provider must be configured first.';
+      preview.innerHTML = '';
+    });
+  </script>
 
-                // सीधे फ्रंटएंड से Fal.ai API को कॉल करना
-                const response = await fetch("https://fal.run", {
-                    method: "POST",
-                    headers: {
-                        "Authorization": `Key ${FAL_KEY}`,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        prompt: finalPrompt,
-                        aspect_ratio: aspectVal,
-                        
+</body>
+</html>
