@@ -1,0 +1,253 @@
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b18">
+<title>Zyphentra AI — Creative Studio</title>
+<style>
+:root{--bg:#080b18;--panel:#11172b;--line:#293451;--blue:#7186ff;--cyan:#45e3e7;--text:#f5f7ff;--muted:#a5b0cc}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at top,#1a2850,#080b18 60%);color:var(--text);font-family:Arial,sans-serif;min-height:100vh}
+header{display:flex;justify-content:space-between;align-items:center;padding:20px 5%;border-bottom:1px solid #ffffff15}
+.logo{font-size:24px;font-weight:900;letter-spacing:-1px}.logo span{color:var(--cyan)}
+.tag{font-size:11px;color:var(--cyan);border:1px solid #34476b;border-radius:30px;padding:8px 11px}
+main{max-width:1000px;margin:auto;padding:35px 16px 55px}
+.hero{text-align:center;margin-bottom:30px}
+.hero h1{font-size:clamp(36px,7vw,62px);margin:18px 0;line-height:1.08}
+.hero h1 span{background:linear-gradient(90deg,#91a5ff,#45e3e7);background-clip:text;color:transparent}
+.hero p{color:var(--muted);line-height:1.8;max-width:600px;margin:auto}
+.pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.pills span{background:#17213b;border:1px solid #2b3a5d;border-radius:30px;padding:8px 12px;font-size:12px}
+.tabs{display:flex;gap:9px;margin:25px 0 15px;overflow-x:auto}
+.tab{flex:1;min-width:105px;background:#11182c;color:#c5cfe9;border:1px solid var(--line);padding:13px 8px;border-radius:11px}
+.tab.active{background:#26365f;border-color:var(--blue);color:white}
+.panel{background:linear-gradient(145deg,#131b31,#0d1222);border:1px solid var(--line);padding:22px;border-radius:18px}
+h2{margin:0 0 8px;font-size:21px}
+.desc{color:var(--muted);font-size:13px;line-height:1.7;margin-bottom:22px}
+label{display:block;font-size:13px;margin:16px 0 8px;color:#dce3f7}
+input,select,textarea{width:100%;background:#090f1f;border:1px solid #303c5c;border-radius:10px;padding:13px;color:white;font:inherit;outline:none}
+textarea{resize:vertical;min-height:110px;line-height:1.6}
+input:focus,select:focus,textarea:focus{border-color:var(--cyan)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+.primary{width:100%;margin-top:22px;padding:15px;border:0;border-radius:11px;background:linear-gradient(100deg,#687fff,#4f67df);color:white;font-weight:bold;font-size:15px}
+.secondary{padding:10px 13px;background:#1b2744;border:1px solid #35476d;border-radius:9px;color:white}
+.output{display:none;margin-top:20px}
+.outputHead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px}
+#result{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.8;font-size:14px;background:#080e1c;border:1px solid #293653;border-radius:12px;padding:16px;min-height:100px}
+.note{font-size:12px;color:var(--muted);line-height:1.8;margin-top:15px}
+footer{text-align:center;border-top:1px solid #ffffff15;padding:25px 15px;color:#8693b1;font-size:12px}
+@media(max-width:520px){header{padding:17px 13px}.logo{font-size:20px}main{padding:25px 12px 40px}.panel{padding:16px}.grid{grid-template-columns:1fr}.hero h1{font-size:38px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Zyphentra <span>AI</span></div>
+  <div class="tag">✦ CREATIVE STUDIO</div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="tag">YOUR IDEAS. YOUR UNIVERSE.</div>
+  <h1>Create Beyond<br><span>Imagination.</span></h1>
+  <p>Apne imagination ko stories, cinematic scripts aur detailed video prompts mein badlo. Ek idea se shuru karo!</p>
+  <div class="pills"><span>🎬 Film Studio</span><span>📖 Story Creator</span><span>🌐 Hindi + English</span></div>
+</section>
+
+<div class="tabs">
+  <button class="tab active" data-mode="story">📖 Story</button>
+  <button class="tab" data-mode="script">🎬 Script</button>
+  <button class="tab" data-mode="video">✨ Video Prompt</button>
+</div>
+
+<section class="panel">
+  <h2 id="formTitle">AI Story Creator</h2>
+  <p class="desc" id="formDesc">Apne idea ko ek detailed kahani mein badlo.</p>
+
+  <form id="creator">
+    <label for="idea">Your Idea / कहानी का आइडिया</label>
+    <textarea id="idea" required maxlength="3000" placeholder="Example: Ek gaon mein aadhi raat ko ek rahasyamayi haveli khulti hai..."></textarea>
+
+    <div class="grid">
+      <div>
+        <label for="genre">Genre / Category</label>
+        <select id="genre">
+          <option>Horror</option>
+          <option>Action</option>
+          <option>Science Fiction</option>
+          <option>Fantasy</option>
+          <option>Comedy</option>
+          <option>Romance</option>
+          <option>Thriller</option>
+          <option>Adventure</option>
+          <option>Motivational</option>
+          <option>Documentary</option>
+        </select>
+      </div>
+      <div>
+        <label for="language">Language / भाषा</label>
+        <select id="language">
+          <option value="Hindi">हिंदी</option>
+          <option value="English">English</option>
+          <option value="Hinglish">Hinglish</option>
+        </select>
+      </div>
+      <div>
+        <label for="length">Detail Level</label>
+        <select id="length">
+          <option value="short">Short</option>
+          <option value="medium" selected>Detailed</option>
+          <option value="long">Very Detailed</option>
+        </select>
+      </div>
+      <div>
+        <label for="style">Visual Style</label>
+        <select id="style">
+          <option>Cinematic Realistic</option>
+          <option>3D Animation</option>
+          <option>Anime</option>
+          <option>Dark Cinematic</option>
+          <option>Documentary Realism</option>
+          <option>Fantasy Epic</option>
+        </select>
+      </div>
+    </div>
+    <button class="primary" type="submit" id="generate">✦ Generate Creative Content</button>
+  </form>
+
+  <div class="output" id="output">
+    <div class="outputHead">
+      <strong id="outputTitle">Your Creation</strong>
+      <button type="button" class="secondary" id="copy">Copy Text</button>
+    </div>
+    <div id="result"></div>
+    <button type="button" class="primary" id="download">Download TXT</button>
+  </div>
+  <p class="note">Note: This free version generates structured creative drafts directly in your browser. Live AI responses and actual video generation require a connected AI service.</p>
+</section>
+</main>
+
+<footer>
+  <div class="logo">Zyphentra <span>AI</span></div>
+  <p>Imagine More. Create More.</p>
+  <p>© <span id="year"></span> Zyphentra AI</p>
+</footer>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+let mode="story";
+const configs={
+story:{title:"AI Story Creator",desc:"Apne idea ko ek detailed kahani mein badlo.",out:"Your Story"},
+script:{title:"Cinematic Script Studio",desc:"Scenes, dialogue aur camera directions ke saath script banao.",out:"Your Script"},
+video:{title:"AI Video Prompt Studio",desc:"AI video generator ke liye detailed visual prompts taiyar karo.",out:"Your Video Prompt"}
+};
+document.querySelectorAll(".tab").forEach(btn=>{
+btn.addEventListener("click",()=>{
+mode=btn.dataset.mode;
+document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b===btn));
+$("formTitle").textContent=configs[mode].title;
+$("formDesc").textContent=configs[mode].desc;
+$("output").style.display="none";
+});
+});
+function makeContent(idea,genre,lang,length,style){
+const hindi=lang==="Hindi";
+const detail=length==="short"?3:length==="long"?7:5;
+const intro=hindi?"आपका मुख्य विचार":"Your core idea";
+const text=[];
+if(mode==="story"){
+text.push("TITLE: "+idea.split(/[.!?\n]/)[0].slice(0,75));
+text.push("GENRE: "+genre);
+text.push("VISUAL STYLE: "+style);
+text.push("");
+text.push(intro+": "+idea);
+text.push("");
+if(hindi){
+text.push("कहानी की शुरुआत\nएक रहस्यमयी माहौल से होती है। मुख्य किरदार एक ऐसी परिस्थिति का सामना करता है जो उसकी दुनिया बदल देती है। धीरे-धीरे नए सुराग सामने आते हैं और खतरा बढ़ने लगता है।");
+text.push("");
+text.push("मुख्य घटनाक्रम");
+}else{
+text.push("OPENING\nThe story opens with an atmospheric introduction to the world and its main character. An unexpected discovery disrupts normal life and introduces the central mystery.");
+text.push("");
+text.push("STORY BEATS");
+}
+for(let i=1;i<=detail;i++){
+if(hindi)text.push(i+". "+["पहला सुराग सामने आता है और किरदार का लक्ष्य स्पष्ट होता है।","एक अप्रत्याशित बाधा परिस्थितियों को और कठिन बना देती है।","किरदार को एक कठिन चुनाव करना पड़ता है।","कहानी का सबसे बड़ा रहस्य सामने आने लगता है।","क्लाइमेक्स में साहस और बुद्धिमानी की परीक्षा होती है।","अंतिम खुलासा कहानी को नया अर्थ देता है।","अंत में एक नया रहस्य अगले भाग का संकेत देता है।"][i-1]);
+else text.push(i+". "+["An unexpected clue establishes the protagonist's goal.","A major obstacle raises the stakes.","An important choice changes the direction of events.","A hidden truth begins to emerge.","The protagonist faces the central conflict.","The climax reveals the consequences of every decision.","A final twist leaves room for a sequel."][i-1]);
+}
+text.push("");
+text.push(hindi?"समापन\nकहानी के सभी मुख्य रहस्यों को उसके केंद्रीय विचार से जोड़कर एक यादगार अंत दें।":"ENDING\nConnect the resolution to the central theme and finish with a memorable emotional or surprising moment.");
+}else if(mode==="script"){
+text.push("PROJECT: "+idea.split(/[.!?\n]/)[0].slice(0,75));
+text.push("GENRE: "+genre+" | STYLE: "+style);
+text.push("");
+for(let i=1;i<=detail;i++){
+text.push("SCENE "+i+" — "+(i===1?"OPENING":i===detail?"CLIMAX / RESOLUTION":"STORY DEVELOPMENT"));
+text.push("VISUAL: "+idea+". Show the action unfolding naturally with clear character movement and cinematic composition.");
+text.push("CAMERA: "+["Wide establishing shot, slow push-in.","Medium shot, controlled tracking movement.","Close-up, subtle handheld movement.","Over-the-shoulder shot, gradual reveal.","Wide cinematic shot, dramatic camera movement."][((i-1)%5)]);
+text.push("LIGHTING & SOUND: "+style+" lighting, layered ambient sound, appropriate music and realistic atmosphere.");
+text.push("DIALOGUE: "+(lang==="Hindi"?"मुख्य किरदार: हमें सच का पता लगाना ही होगा।":"MAIN CHARACTER: We have to find out the truth."));
+text.push("");
+}
+}else{
+text.push("AI VIDEO GENERATION PROMPT");
+text.push("");
+text.push("CORE IDEA: "+idea);
+text.push("GENRE: "+genre);
+text.push("VISUAL STYLE: "+style);
+text.push("LANGUAGE: "+lang);
+text.push("");
+text.push("MASTER PROMPT:");
+text.push("Create a "+style+" cinematic sequence based on: "+idea+". Genre: "+genre+". Use coherent visual storytelling, believable character movement, expressive faces, detailed environments, realistic lighting, atmospheric depth, natural motion, carefully composed shots, consistent character appearance, professional color grading, and immersive environmental audio. Build tension and emotion appropriate to the story. Deliver a visually coherent sequence with a clear beginning, development, and ending.");
+text.push("");
+text.push("SHOT PLAN:");
+for(let i=1;i<=detail;i++){
+text.push(i+". "+["Establishing wide shot introducing the location, time, weather and atmosphere.","Medium shot introducing the central character and action.","Close-up showing an important expression, object or clue.","Moving tracking shot revealing new story information.","Dramatic climax shot with deliberate camera movement.","Reaction shot capturing the emotional consequence.","Final wide shot with a memorable closing composition."][i-1]);
+}
+text.push("");
+text.push("NEGATIVE PROMPT:");
+text.push("Avoid flicker, distorted anatomy, extra fingers, inconsistent faces, sudden character changes, warped objects, unreadable text, unnatural motion, excessive blur, random cuts, low resolution, and inconsistent lighting.");
+}
+text.push("");
+text.push("CREATED WITH ZYPHENTRA AI");
+return text.join("\n");
+}
+$("creator").addEventListener("submit",e=>{
+e.preventDefault();
+const idea=$("idea").value.trim();
+if(!idea)return;
+const result=makeContent(idea,$("genre").value,$("language").value,$("length").value,$("style").value);
+$("result").textContent=result;
+$("outputTitle").textContent=configs[mode].out;
+$("output").style.display="block";
+$("output").scrollIntoView({behavior:"smooth",block:"start"});
+});
+$("copy").addEventListener("click",async()=>{
+const text=$("result").textContent;
+try{
+if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(text);
+else{
+const area=document.createElement("textarea");
+area.value=text;document.body.appendChild(area);area.select();
+const ok=document.execCommand("copy");area.remove();
+if(!ok)throw new Error("Copy unavailable");
+}
+$("copy").textContent="Copied ✓";
+setTimeout(()=>$("copy").textContent="Copy Text",1600);
+}catch(e){$("copy").textContent="Select text to copy";}
+});
+$("download").addEventListener("click",()=>{
+const blob=new Blob([$("result").textContent],{type:"text/plain;charset=utf-8"});
+const url=URL.createObjectURL(blob);
+const a=document.createElement("a");
+a.href=url;a.download="Zyphentra-AI-Creation.txt";
+document.body.appendChild(a);a.click();a.remove();
+URL.revokeObjectURL(url);
+});
+$("year").textContent=new Date().getFullYear();
+})();
+</script>
+</body>
+  </html>
