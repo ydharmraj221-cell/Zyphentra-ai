@@ -4,174 +4,176 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zyphentra AI — Direct AI Video Generator</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --bg-dark: #07070c;
+            --panel-dark: #0f101c;
+            --input-bg: #161726;
+            --accent-cyan: #00ffcc;
+            --accent-blue: #3b82f6;
+            --text-main: #ffffff;
+            --text-muted: #7e84a3;
+            --border-color: #1e2238;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+        body { background: var(--bg-dark); color: var(--text-main); padding: 15px; min-height: 100vh; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 500px; }
+        header { text-align: center; margin-bottom: 20px; margin-top: 10px; }
+        .logo { font-size: 1.8rem; font-weight: 800; letter-spacing: 1px; color: #fff; }
+        .logo span { color: var(--accent-cyan); text-shadow: 0 0 10px rgba(0,255,204,0.3); }
+        .tagline { color: var(--text-muted); font-size: 0.85rem; margin-top: 4px; }
+        
+        .studio-card { background: var(--panel-dark); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: flex; flex-direction: column; gap: 15px; }
+        .card-title { font-size: 1.3rem; font-weight: 700; }
+        .input-group { display: flex; flex-direction: column; gap: 6px; }
+        label { font-size: 0.85rem; color: var(--text-muted); }
+        textarea, select { width: 100%; background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 10px; color: #fff; padding: 12px; font-size: 0.95rem; outline: none; resize: none; transition: 0.2s; }
+        textarea:focus, select:focus { border-color: var(--accent-cyan); }
+        
+        .row-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        
+        #generate-btn { background: linear-gradient(135deg, var(--accent-blue), #1d4ed8); color: white; border: none; border-radius: 10px; padding: 14px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 5px; }
+        #generate-btn:hover:not(:disabled) { background: linear-gradient(135deg, #2563eb, #1e40af); }
+        #generate-btn:disabled { background: #222538; color: #555; cursor: not-allowed; }
+
+        /* प्लेयर और लोडिंग स्क्रीन */
+        .output-container { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 12px; position: relative; overflow: hidden; border: 1px solid var(--border-color); margin-top: 10px; }
+        video { width: 100%; height: 100%; object-fit: contain; }
+        .placeholder { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.85rem; text-align: center; padding: 10px; }
+        
+        .status-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(7, 7, 12, 0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; z-index: 10; }
+        .spinner { width: 32px; height: 32px; border: 3px solid rgba(255,255,255,0.05); border-top-color: var(--accent-cyan); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 12px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .progress-box { width: 80%; height: 4px; background: #161726; border-radius: 2px; margin-top: 12px; overflow: hidden; }
+        .progress-bar { height: 100%; background: var(--accent-cyan); width: 0%; transition: width 0.3s ease; box-shadow: 0 0 8px var(--accent-cyan); }
+        
+        .download-zone { display: flex; justify-content: center; margin-top: 5px; }
+        .download-btn { width: 100%; text-align: center; background: #161726; color: #fff; padding: 12px; border-radius: 10px; text-decoration: none; font-weight: 600; border: 1px solid var(--border-color); font-size: 0.95rem; transition: 0.2s; }
+        .download-btn:hover:not(.disabled) { background: var(--accent-cyan); color: var(--bg-dark); border-color: var(--accent-cyan); }
+        .disabled { opacity: 0.2; pointer-events: none; }
+        .hidden { display: none !important; }
+    </style>
 </head>
 <body>
     <div class="app-container">
-        <!-- हेडर -->
         <header>
-            <div class="logo">ZYPHENTRA <span class="accent">AI</span></div>
-            <p class="tagline">टेक्स्ट से सीधे असली AI वीडियो जनरेटर</p>
+            <div class="logo">ZYPHENTRA <span>AI</span></div>
+            <p class="tagline">Direct AI Video Generation Studio</p>
         </header>
 
-        <!-- मुख्य डैशबोर्ड -->
-        <main class="dashboard">
-            <!-- बाएं: कंट्रोल्स पैनल -->
-            <section class="controls-panel">
+        <main class="studio-card">
+            <div class="card-title">AI Video Generator</div>
+            
+            <div class="input-group">
+                <label>Your Idea / कहानी का आइडिया</label>
+                <textarea id="prompt" placeholder="Ek ganv me khandahar maidan, horror style, cinematic look..." rows="4"></textarea>
+            </div>
+
+            <div class="row-grid">
                 <div class="input-group">
-                    <label for="prompt">अपना वीडियो प्रॉम्प्ट या कहानी लिखें:</label>
-                    <textarea id="prompt" placeholder="उदा. एक खंडहर खेल का मैदान, शाम का समय, सिनेमैटिक शॉट..." rows="4"></textarea>
+                    <label>Genre / Category</label>
+                    <select id="genre">
+                        <option value="Horror">Horror</option>
+                        <option value="Cinematic">Cinematic</option>
+                        <option value="Anime">Anime</option>
+                        <option value="Sci-Fi">Sci-Fi</option>
+                    </select>
                 </div>
-
-                <div class="settings-grid">
-                    <div class="control-item">
-                        <label for="aspect-ratio">आस्पेक्ट रेशियो</label>
-                        <select id="aspect-ratio">
-                            <option value="16:9">16:9 (YouTube)</option>
-                            <option value="9:16">9:16 (Reels)</option>
-                            <option value="1:1">1:1 (Square)</option>
-                        </select>
-                    </div>
-
-                    <div class="control-item">
-                        <label for="style">वीडियो स्टाइल</label>
-                        <select id="style">
-                            <option value="cinematic">Cinematic</option>
-                            <option value="realistic">Realistic 4K</option>
-                            <option value="horror">Horror / Dark</option>
-                            <option value="anime">Anime</option>
-                        </select>
-                    </div>
+                <div class="input-group">
+                    <label>Aspect Ratio</label>
+                    <select id="aspect-ratio">
+                        <option value="16:9">16:9 (Horizontal)</option>
+                        <option value="9:16">9:16 (Vertical/Reels)</option>
+                        <option value="1:1">1:1 (Square)</option>
+                    </select>
                 </div>
+            </div>
 
-                <button id="generate-btn" onclick="startVideoGeneration()">Generate Video</button>
-            </section>
+            <button id="generate-btn" onclick="generateRealVideo()">✦ Generate Real Video</button>
 
-            <!-- दाएं: वीडियो प्लेयर पैनल -->
-            <section class="preview-panel">
-                <div class="player-container">
-                    <!-- लोडिंग और प्रोग्रेस बार -->
-                    <div id="status-overlay" class="status-overlay hidden">
-                        <div class="spinner"></div>
-                        <p id="status-text">प्रोसेसिंग चालू है...</p>
-                        <div class="progress-bar-container">
-                            <div id="progress-bar" class="progress-bar"></div>
-                        </div>
-                    </div>
-
-                    <!-- असली वीडियो प्लेयर -->
-                    <video id="video-player" controls class="hidden"></video>
-                    
-                    <!-- खाली स्क्रीन का टेक्स्ट -->
-                    <div id="player-placeholder" class="player-placeholder">
-                        <span>आपका AI वीडियो यहाँ दिखाई देगा</span>
+            <!-- वीडियो और लोडिंग एरिया -->
+            <div class="output-container">
+                <div id="status-overlay" class="status-overlay hidden">
+                    <div class="spinner"></div>
+                    <p id="status-text">AI सर्वर कनेक्ट हो रहा है...</p>
+                    <div class="progress-box">
+                        <div id="progress-bar" class="progress-bar"></div>
                     </div>
                 </div>
 
-                <!-- डाउनलोड बटन -->
-                <div class="action-buttons">
-                    <a id="download-btn" class="btn download-btn disabled" download="zyphentra-ai-video.mp4">Download Video</a>
+                <video id="video-player" controls class="hidden"></video>
+                
+                <div id="placeholder-text" class="placeholder">
+                    <span>प्रॉम्प्ट लिखकर बटन दबाएं, आपका असली वीडियो यहाँ जेनरेट होकर प्ले होगा।</span>
                 </div>
-            </section>
+            </div>
+
+            <div class="download-zone">
+                <a id="download-btn" class="download-btn disabled" download="zyphentra_ai_video.mp4">Download Video</a>
+            </div>
         </main>
     </div>
 
-    <!-- असली AI वीडियो जनरेशन जावास्क्रिप्ट लॉजिक -->
     <script>
-        async function startVideoGeneration() {
-            const promptInput = document.getElementById('prompt').value.trim();
-            if (!promptInput) {
-                alert('कृपया पहले कोई प्रॉम्प्ट लिखें!');
+        async function generateRealVideo() {
+            const promptVal = document.getElementById('prompt').value.trim();
+            if (!promptVal) {
+                alert('कृपया पहले कोई कहानी या आइडिया लिखें!');
                 return;
             }
 
             const btn = document.getElementById('generate-btn');
-            const statusOverlay = document.getElementById('status-overlay');
+            const overlay = document.getElementById('status-overlay');
             const statusText = document.getElementById('status-text');
-            const progressBar = document.getElementById('progress-bar');
-            const videoPlayer = document.getElementById('video-player');
-            const placeholder = document.getElementById('player-placeholder');
-            const downloadBtn = document.getElementById('download-btn');
+            const pBar = document.getElementById('progress-bar');
+            const player = document.getElementById('video-player');
+            const placeholder = document.getElementById('placeholder-text');
+            const dlBtn = document.getElementById('download-btn');
 
-            // UI रीसेट करें
+            // UI को जनरेशन मोड में सेट करें
             btn.disabled = true;
-            statusOverlay.classList.remove('hidden');
-            videoPlayer.classList.add('hidden');
+            overlay.classList.remove('hidden');
+            player.classList.add('hidden');
             placeholder.classList.add('hidden');
-            downloadBtn.classList.add('disabled');
+            dlBtn.classList.add('disabled');
+            dlBtn.removeAttribute('href');
             
-            statusText.innerText = "AI सर्वर को रिक्वेस्ट भेजी जा रही है...";
-            progressBar.style.width = "15%";
+            statusText.innerText = "AI मॉडल को प्रॉम्प्ट प्रोसेस के लिए भेज रहे हैं...";
+            pBar.style.width = "15%";
 
             try {
-                // बैकएंड सर्वरलेस फंक्शन को रिक्वेस्ट भेजना
+                // यह हमारे सर्वरलेस बैकएंड (/api/generate-video) को कॉल करेगा जहाँ Fal.ai की की (Key) सुरक्षित है
                 const response = await fetch('/api/generate-video', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        prompt: promptInput,
-                        aspect_ratio: document.getElementById('aspect-ratio').value,
-                        style: document.getElementById('style').value
+                        prompt: promptVal,
+                        genre: document.getElementById('genre').value,
+                        aspect_ratio: document.getElementById('aspect-ratio').value
                     })
                 });
 
                 const data = await response.json();
-                if (!response.ok || data.error) throw new Error(data.error || "सर्वर एरर।");
+                if (!response.ok || data.error) throw new Error(data.error || "जनरेशन रिक्वेस्ट फेल हो गई।");
 
-                // जॉब आईडी मिलने पर रीयल-टाइम पोलिंग (चेकिंग) चालू करना
                 if (data.job_id) {
                     statusText.innerText = "वीडियो रेंडर हो रहा है (GPU Processing)...";
-                    progressBar.style.width = "40%";
+                    pBar.style.width = "45%";
                     
                     let videoUrl = null;
-                    // अधिकतम 40 बार चेक करेगा (लगभग 2 मिनट)
+                    // रीयल-टाइम पोलिंग (हर 4 सेकंड में चेक करेगा कि वीडियो बना या नहीं)
                     for (let i = 0; i < 40; i++) { 
-                        await new Promise(r => setTimeout(r, 4000)); // हर 4 सेकंड में चेक करेगा
+                        await new Promise(r => setTimeout(r, 4000));
                         
-                        const statusCheck = await fetch(`/api/generate-video?job_id=${data.job_id}`);
-                        const statusData = await statusCheck.json();
+                        const check = await fetch(`/api/generate-video?job_id=${data.job_id}`);
+                        const checkData = await check.json();
                         
-                        // प्रोग्रेस बार को स्मूथली बढ़ाना
-                        let currentProgress = 40 + (i * 1.5);
+                        // प्रोग्रेस बार को धीरे-धीरे आगे बढ़ाना
+                        let currentProgress = 45 + (i * 1.5);
                         if(currentProgress > 95) currentProgress = 95;
-                        progressBar.style.width = currentProgress + "%";
+                        pBar.style.width = currentProgress + "%";
 
-                        if (statusData.status === 'COMPLETED') {
-                            videoUrl = statusData.video_url;
+                        if (checkData.status === 'COMPLETED') {
+                            videoUrl = checkData.video_url;
                             break;
-                        } else if (statusData.status === 'FAILED') {
-                            throw new Error("AI मॉडल वीडियो नहीं बना पाया।");
-                        }
-                    }
-
-                    if (!videoUrl) throw new Error("टाइमआउट! दोबारा ट्राई करें।");
-                    displayVideo(videoUrl);
-                } else {
-                    throw new Error("जॉब आईडी नहीं मिली।");
-                }
-            } catch (error) {
-                statusText.innerText = "त्रुटि: " + error.message;
-                progressBar.style.width = "0%";
-                btn.disabled = false;
-                setTimeout(() => statusOverlay.classList.add('hidden'), 5000);
-            }
-        }
-
-        // प्लेयर में वीडियो लोड करने और प्ले करने का फंक्शन
-        function displayVideo(url) {
-            document.getElementById('generate-btn').disabled = false;
-            document.getElementById('status-overlay').classList.add('hidden');
-            
-            const vp = document.getElementById('video-player');
-            vp.classList.remove('hidden');
-            vp.src = url;
-            vp.load();
-            vp.play().catch(e => console.log("Auto-play blocked"));
-            
-            const db = document.getElementById('download-btn');
-            db.classList.remove('disabled');
-            db.href = url;
-        }
-    </script>
-</body>
-</html>
+                            
